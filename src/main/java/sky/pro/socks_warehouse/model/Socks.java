@@ -1,20 +1,38 @@
 package sky.pro.socks_warehouse.model;
 
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
 
 @Entity
-@IdClass(SocksId.class)
 public class Socks{
 
-    @Id
-    private String color;
-
-    @Id
-    private Integer cottonPart;
+    @EmbeddedId
+    private SocksId id;
 
     private Integer quantity;
 
+    public Socks() {
 
+    }
+
+    public SocksId getId() {
+        return id;
+    }
+
+    public void setId(SocksId id) {
+        this.id = id;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public Socks(SocksId id, Integer quantity) {
+        this.id = id;
+        this.quantity = quantity;
+    }
 }

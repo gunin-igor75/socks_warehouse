@@ -12,7 +12,7 @@ public @interface ValidationSocksColors {
 
     String[] valueColors();
 
-    String message() default "Цвет не допустим ${validatedValue}, можеть быть: {colors } ";
+    String message() default "Цвет не допустим ${validatedValue}, можеть быть: {valueColors} ";
 
     Class<?>[] groups() default {};
 

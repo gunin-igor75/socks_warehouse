@@ -11,14 +11,14 @@
                  endDelimiter="\nGO"
                  splitStatements="true"
                  stripComments="true"
-                 path="db/changelog/v-1.0/01-create-socks-table.sql"/>
+                 path="liquibase/v-1.0/01-create-socks-table.sql"/>
         <rollback>
             <sqlFile dbms="postgresql"
                      encoding="utf-8"
                      endDelimiter="\nGO"
                      splitStatements="true"
                      stripComments="true"
-                     path="db/changelog/v-1.0/01-drop-socks-table.sql"/>
+                     path="liquibase/v-1.0/01-drop-socks-table.sql"/>
         </rollback>
     </changeSet>
 

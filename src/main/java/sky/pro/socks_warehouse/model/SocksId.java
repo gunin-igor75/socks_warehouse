@@ -1,8 +1,11 @@
 package sky.pro.socks_warehouse.model;
 
+import jakarta.persistence.Embeddable;
+
 import java.io.Serializable;
 import java.util.Objects;
 
+@Embeddable
 public class SocksId implements Serializable {
 
     private String color;
@@ -17,6 +20,21 @@ public class SocksId implements Serializable {
         this.cottonPart = cottonPart;
     }
 
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public Integer getCottonPart() {
+        return cottonPart;
+    }
+
+    public void setCottonPart(Integer cottonPart) {
+        this.cottonPart = cottonPart;
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -1,40 +1,37 @@
 package sky.pro.socks_warehouse.controller;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import sky.pro.socks_warehouse.dto.SocksCount;
 import sky.pro.socks_warehouse.dto.SocksCreate;
-import sky.pro.socks_warehouse.validation.ValidationSocksColors;
-import sky.pro.socks_warehouse.validation.ValidationSocksOperations;
+import sky.pro.socks_warehouse.service.SocksService;
 
 @RestController
 @RequestMapping("/api/socks")
-@Validated
+@RequiredArgsConstructor
 public class SocksController {
 
+    private final SocksService socksService;
+
     @PostMapping("/income")
-    public ResponseEntity<?> income(@RequestBody @Valid SocksCreate socksCreate) {
-        return null;
+    public void income(@Valid @RequestBody  SocksCreate socksCreate) {
+        socksService.createSocks(socksCreate);
     }
 
     @PostMapping("/outcome")
-    public ResponseEntity<?> outcome() {
-        return null;
+    public void outcome(@Valid @RequestBody SocksCreate socksCreate) {
+        socksService.deleteSocks(socksCreate);
     }
 
     @GetMapping
-    public ResponseEntity<Integer> getSocks(@RequestParam(value = "color") @ValidationSocksColors(valueColors =
-            {"black", "red", "yellow"}, message = "") String color,
-                                            @RequestParam(value = "operation") @ValidationSocksOperations(valueOperations =
-                                                    {"moreThan", "lessThan", "equal"}, message = "") String operation,
-                                            @RequestParam(value = "cottonPart") @Min(value = 0,
-                                                    message = "Минимальное целое число должно быть не меньше 0")
-                                            @Max(value = 100, message = "Максимальное число должно быть не больше 100")
-                                            int cottonPart) {
+    public ResponseEntity<Long> getSocks(@RequestParam(value = "color")  String color,
+                                            @RequestParam(value = "operation") String operation,
+                                            @RequestParam(value = "cottonPart")int cottonPart) {
 
-        return null;
+        SocksCount socksCount = new SocksCount(color, operation, cottonPart);
+        Long partSocks = socksService.getPartSocks(socksCount);
+        return ResponseEntity.ok().body(partSocks);
     }
 }

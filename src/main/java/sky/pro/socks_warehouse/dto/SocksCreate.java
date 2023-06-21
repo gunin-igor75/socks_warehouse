@@ -19,4 +19,16 @@ public class SocksCreate {
     @Min(value = 0, message = "Минимальное целое число должно быть не меньше 0")
     @Max(value = Integer.MAX_VALUE, message = "Максимальное число должно быть не больше Integer.MAX_VALUE")
     private Integer quantity;
+
+    public String getColor() {
+        return color;
+    }
+
+    public Integer getCottonPart() {
+        return cottonPart;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
 }

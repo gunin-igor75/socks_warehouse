@@ -6,5 +6,6 @@ import sky.pro.socks_warehouse.model.Socks;
 import sky.pro.socks_warehouse.model.SocksId;
 
 @Repository
-public interface SocksRepository extends JpaRepository<Socks, SocksId> {
+public interface SocksRepository extends JpaRepository<Socks, SocksId>{
+
 }
