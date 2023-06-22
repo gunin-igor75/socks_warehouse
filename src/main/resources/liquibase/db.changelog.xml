@@ -20,10 +20,10 @@
         <tagDatabase tag="v.1.0"/>
     </changeSet>
 
-<!--    <include file="v-2.0/db.changelog-v.2.0.xml" relativeToChangelogFile="true"/>-->
+    <include file="v-2.0/db.changelog-v.2.0.xml" relativeToChangelogFile="true"/>
 
-<!--    <changeSet id="7" author="igor">-->
-<!--        <tagDatabase tag="v.2.0"/>-->
-<!--    </changeSet>-->
+    <changeSet id="4" author="igor">
+        <tagDatabase tag="v.2.0"/>
+    </changeSet>
 
 </databaseChangeLog>
