@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +12,6 @@ import sky.pro.socks_warehouse.dto.SocksCount;
 import sky.pro.socks_warehouse.dto.SocksCreate;
 import sky.pro.socks_warehouse.exception_nandler.ResourceNotFoundException;
 import sky.pro.socks_warehouse.model.Socks;
-import sky.pro.socks_warehouse.model.SocksId;
 import sky.pro.socks_warehouse.repository.SocksRepository;
 
 import java.util.List;
@@ -24,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @DataJpaTest
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@ActiveProfiles("testcontainers")
 @ContextConfiguration(classes = SocksServiceConfiguration.class)
 class SocksServiceContainersTest extends IntegrationSuite {
 
@@ -47,7 +44,7 @@ class SocksServiceContainersTest extends IntegrationSuite {
         int cottonPart = 50;
         int quantity = 10;
         SocksCreate socks = givenSocksCreate(color, cottonPart, quantity);
-        SocksId id = givenSocksId(color, cottonPart);
+        Socks.SocksId id = givenSocksId(color, cottonPart);
 
         socksServiceTest.createSocks(socks);
         Socks actualSocks = socksRepository.findById(id).orElseThrow();
@@ -65,7 +62,7 @@ class SocksServiceContainersTest extends IntegrationSuite {
                 givenSocksCreate("red", 50, 40),
                 givenSocksCreate("red", 60, 10)
         );
-        SocksId id = givenSocksId("red", 50);
+        Socks.SocksId id = givenSocksId("red", 50);
 
         socksCreates.forEach(socksCreate -> socksServiceTest.createSocks(socksCreate));
         Socks actualSocks = socksRepository.findById(id).orElseThrow();
@@ -81,7 +78,7 @@ class SocksServiceContainersTest extends IntegrationSuite {
                 givenSocksCreate("black", 60, 10)
         );
         SocksCreate socksBlack = givenSocksCreate("black", 50, 40);
-        SocksId id = givenSocksId("black", 50);
+        Socks.SocksId id = givenSocksId("black", 50);
 
         socksCreates.forEach(socksCreate -> socksServiceTest.createSocks(socksCreate));
         socksServiceTest.reduceQuantitySocks(socksBlack);
@@ -145,7 +142,7 @@ class SocksServiceContainersTest extends IntegrationSuite {
         return new SocksCreate(color, cottonPart, quantity);
     }
 
-    private static SocksId givenSocksId(String color, int cottonPart) {
-        return new SocksId(color, cottonPart);
+    private static Socks.SocksId givenSocksId(String color, int cottonPart) {
+        return new Socks.SocksId(color, cottonPart);
     }
 }

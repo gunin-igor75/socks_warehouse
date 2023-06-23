@@ -6,6 +6,9 @@ import jakarta.validation.Payload;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+/**
+ * Анотация для валидации операций над носками
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = SocksOperationConstraintValidator.class)
 public @interface ValidationSocksOperations {

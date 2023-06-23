@@ -12,10 +12,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
+/**
+ * Глобальная обработка исключении в приложении
+ */
 @RestControllerAdvice
 public class SocksGlobalExceptionHandler {
 
+    /**
+     * Обработчик исключения{@code MethodArgumentNotValidException}
+     *
+     * @param ex- исключение при валидаии данных обрабатываемых spring
+     * @return - обертка с удобной формы восприятия исключения на фронте
+     */
     @ExceptionHandler
     @ResponseStatus(BAD_REQUEST)
     public ResponseEntity<ErrorResponse> handleAnotherError(MethodArgumentNotValidException ex) {
@@ -26,9 +36,27 @@ public class SocksGlobalExceptionHandler {
         return new ResponseEntity<>(new ErrorResponse(message), BAD_REQUEST);
     }
 
-    @ExceptionHandler({ConstraintViolationException.class, ResourceNotFoundException.class})
+    /**
+     * Обработчик исключения{@code ConstraintViolationException}
+     *
+     * @param ex- исключение при валидаии данных кастомным обработчиком
+     * @return - обертка с удобной формы восприятия исключения на фронте
+     */
+    @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(BAD_REQUEST)
-    public ResponseEntity<ErrorResponse> handleConstraintViolationException(RuntimeException ex) {
+    public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException ex) {
         return new ResponseEntity<>(new ErrorResponse(ex.getMessage()), BAD_REQUEST);
+    }
+
+    /**
+     * Обработчик исключения{@code ResourceNotFoundException}
+     *
+     * @param ex- исключение при отсутсвии ресурсв в базе данных
+     * @return - обертка с удобной формы восприятия исключения на фронте
+     */
+    @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(NOT_FOUND)
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException ex) {
+        return new ResponseEntity<>(new ErrorResponse(ex.getMessage()), NOT_FOUND);
     }
 }

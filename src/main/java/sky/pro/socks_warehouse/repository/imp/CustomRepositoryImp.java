@@ -9,6 +9,9 @@ import sky.pro.socks_warehouse.repository.CustomRepository;
 
 import java.util.List;
 
+/**
+ * Имплементация кастомного репозитория
+ */
 @Repository
 @Transactional(readOnly = true)
 public class CustomRepositoryImp implements CustomRepository {
@@ -16,6 +19,13 @@ public class CustomRepositoryImp implements CustomRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
+    /**
+     * пПолучение количества носков
+     * @param color - цвет носков
+     * @param operation - операция выбора носков
+     * @param cottonPart - процент содержания хлопка
+     * @return - количество носков
+     */
     @Override
     public Long getCountPartSocks(String color, String operation, Integer cottonPart) {
         String query = """
