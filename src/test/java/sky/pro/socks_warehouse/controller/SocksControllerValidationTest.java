@@ -1,8 +1,8 @@
 package sky.pro.socks_warehouse.controller;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(SocksController.class)
 @ActiveProfiles("test")
-class SocksControllerValidationTest {
+public class SocksControllerValidationTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -35,7 +35,7 @@ class SocksControllerValidationTest {
     })
     public void testIncomeStatus200(String color,int cottonPart, int quantity) throws Exception {
 
-        JSONObject socksCreate = getObject(color, cottonPart, quantity);
+        JSONObject socksCreate = getObjectCreate(color, cottonPart, quantity);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/socks/income")
@@ -54,7 +54,7 @@ class SocksControllerValidationTest {
     })
     public void testIncomeStatus400(String color,int cottonPart, int quantity) throws Exception {
 
-        JSONObject socksCreate = getObject(color, cottonPart, quantity);
+        JSONObject socksCreate = getObjectCreate(color, cottonPart, quantity);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/socks/income")
@@ -73,7 +73,7 @@ class SocksControllerValidationTest {
     })
     public void testOutcomeStatus200(String color,int cottonPart, int quantity) throws Exception {
 
-        JSONObject socksCreate = getObject(color, cottonPart, quantity);
+        JSONObject socksCreate = getObjectCreate(color, cottonPart, quantity);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/socks/outcome")
@@ -93,7 +93,7 @@ class SocksControllerValidationTest {
     })
     public void testOutcomeStatus400(String color,int cottonPart, int quantity) throws Exception {
 
-        JSONObject socksCreate = getObject(color, cottonPart, quantity);
+        JSONObject socksCreate = getObjectCreate(color, cottonPart, quantity);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/socks/outcome")
@@ -139,11 +139,46 @@ class SocksControllerValidationTest {
 
     }
 
-    @NotNull
-    private static JSONObject getObject(String color, int cottonPart, int quantity) throws JSONException {
+    @Test
+    public void testNullObjectColor() throws Exception {
+        JSONObject jsonSocks = getObjectCount(null, "equal", 20);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/api/socks")
+                        .content(jsonSocks.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+
+    }
+
+    @Test
+    public void testNullObjectOperation() throws Exception {
+        JSONObject jsonSocks = getObjectCount("red", null, 20);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/api/socks")
+                        .content(jsonSocks.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+
+    }
+
+    private static JSONObject getObjectCreate(String color, int cottonPart, int quantity) throws JSONException {
         JSONObject socksCreate = new JSONObject();
         socksCreate.put("color", color);
         socksCreate.put("cottonPart", cottonPart);
+        socksCreate.put("quantity", quantity);
+        return socksCreate;
+    }
+
+    private static JSONObject getObjectCount(String color, String operation, int quantity) throws JSONException {
+        JSONObject socksCreate = new JSONObject();
+        socksCreate.put("color", color);
+        socksCreate.put("cottonPart", operation);
         socksCreate.put("quantity", quantity);
         return socksCreate;
     }
